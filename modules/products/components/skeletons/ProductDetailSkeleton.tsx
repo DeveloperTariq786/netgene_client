@@ -3,7 +3,7 @@
 import React from 'react';
 import { Card } from '@/core/components/ui/card';
 import { Skeleton } from '@/core/components/ui/skeleton';
-import { cn } from '@/core/utils/utils';
+import { cn } from '@/core/lib/utils/utils';
 
 interface ProductDetailSkeletonProps {
     isModal?: boolean;

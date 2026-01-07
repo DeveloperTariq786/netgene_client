@@ -3,7 +3,7 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { BrandCard } from './BrandCard';
 import { Brand } from '../types';
-import { Swiper, SwiperSlide, Autoplay, Navigation, useSwiper } from '../../../core/utils/swiper';
+import { Swiper, SwiperSlide, Autoplay, Navigation, useSwiper } from '../../../core/lib/utils/swiper';
 import { useIsMobile } from '../../../core/hooks/use-mobile';
 
 interface BrandSliderProps {

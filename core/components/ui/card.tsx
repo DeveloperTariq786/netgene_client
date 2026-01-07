@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "@/core/utils/utils";
+import { cn } from "@/core/lib/utils/utils";
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     maxWidth?: string;

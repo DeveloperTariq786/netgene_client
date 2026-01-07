@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Eye } from "lucide-react";
 import { Button } from "@/core/components/ui/button";
-import { cn } from "@/core/utils/utils";
+import { cn } from "@/core/lib/utils/utils";
 
 export interface ShowMoreButtonProps
     extends React.ButtonHTMLAttributes<HTMLButtonElement> {

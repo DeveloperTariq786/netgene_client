@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Swiper, SwiperSlide, useSwiper, Autoplay, Navigation } from '@/core/utils/swiper';
+import { Swiper, SwiperSlide, useSwiper, Autoplay, Navigation } from '@/core/lib/utils/swiper';
 import { CategoryItem } from '../types';
 import CarouselArrow from '@/core/components/shared/CarouselArrow';
 

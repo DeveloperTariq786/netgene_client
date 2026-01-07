@@ -3,7 +3,7 @@
 import React from 'react';
 import { X } from 'lucide-react';
 
-import { cn } from '@/core/utils/utils';
+import { cn } from '@/core/lib/utils/utils';
 
 interface ModalProps {
     isOpen: boolean;

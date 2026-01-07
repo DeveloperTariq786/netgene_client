@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "@/core/utils/utils";
+import { cn } from "@/core/lib/utils/utils";
 
 export interface RatingStarsProps extends React.HTMLAttributes<HTMLDivElement> {
     rating: number | null;

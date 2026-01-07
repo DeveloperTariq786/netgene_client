@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input } from '@/core/components/ui/input';
-import { cn } from '@/core/utils/utils';
+import { cn } from '@/core/lib/utils/utils';
 
 interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;

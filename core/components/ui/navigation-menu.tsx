@@ -1,7 +1,7 @@
 import * as React from "react"
 import { ChevronDown } from "lucide-react"
 
-import { cn } from "@/core/utils/utils"
+import { cn } from "@/core/lib/utils/utils"
 
 const NavigationMenu = React.forwardRef<
     HTMLElement,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Badge } from '@/core/components/ui/badge';
-import { cn } from '@/core/utils/utils';
+import { cn } from '@/core/lib/utils/utils';
 
 interface ProductBadgeProps {
     onSale?: boolean;

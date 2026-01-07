@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Swiper, SwiperSlide, useSwiper, Autoplay, Pagination, EffectFade, Navigation } from '@/core/utils/swiper';
+import { Swiper, SwiperSlide, useSwiper, Autoplay, Pagination, EffectFade, Navigation } from '@/core/lib/utils/swiper';
 import { ShoppingBag, Tag, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCarousel } from '../hooks/useCarousel';

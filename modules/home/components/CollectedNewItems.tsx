@@ -1,7 +1,7 @@
 'use client';
 
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { Swiper, SwiperSlide, useSwiper, Autoplay, Navigation } from '@/core/utils/swiper';
+import { Swiper, SwiperSlide, useSwiper, Autoplay, Navigation } from '@/core/lib/utils/swiper';
 import SmartProductCard from '@/modules/products/components/SmartProductCard';
 import { Product } from '@/modules/home/types';
 import { SAMPLE_PRODUCTS } from '@/core/constants/index';

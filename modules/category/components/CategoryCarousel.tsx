@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Swiper, SwiperSlide, useSwiper, Autoplay, Navigation } from '@/core/utils/swiper';
+import { Swiper, SwiperSlide, useSwiper, Autoplay, Navigation } from '@/core/lib/utils/swiper';
 
 import CarouselArrow from '@/core/components/shared/CarouselArrow';
 import { useIsMobile } from '@/core/hooks/use-mobile';

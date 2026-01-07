@@ -7,32 +7,46 @@ import { Card } from '@/core/components/ui/card';
 import { RatingStars } from '@/core/components/ui/rating-stars';
 import { PriceDisplay } from '@/core/components/ui/price-display';
 import { Product } from '@/modules/home/types';
+import OutOfStockBadge from './OutOfStockBadge';
 
 interface ProductCardProps {
     product: Product;
     onQuickView?: (product: Product) => void;
     onClick?: (product: Product) => void;
+    onAddToCart?: (product: Product) => void;
     topLeftBadge?: React.ReactNode;
     topRightBadge?: React.ReactNode;
+    addToCartLabel?: string;
+    addToCartIcon?: React.ReactNode;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView, onClick, topLeftBadge, topRightBadge }) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+    product,
+    onQuickView,
+    onClick,
+    onAddToCart,
+    topLeftBadge,
+    topRightBadge,
+    addToCartLabel = 'Add',
+    addToCartIcon,
+}) => {
     const [isHovered, setIsHovered] = useState(false);
     const [imageError, setImageError] = useState(false);
+
+    const handleAddToCart = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (product.quantity === 0) return;
+        onAddToCart?.(product);
+    };
 
     const handleQuickView = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        if (onQuickView) {
-            onQuickView(product);
-        }
+        onQuickView?.(product);
     };
 
-    const handleCardClick = () => {
-        if (onClick) {
-            onClick(product);
-        }
-    };
+    const handleCardClick = () => onClick?.(product);
 
     return (
         <Card
@@ -45,31 +59,29 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView, onClick
             onMouseLeave={() => setIsHovered(false)}
             onClick={handleCardClick}
         >
-            {/* Top Left Badge Slot */}
-            {topLeftBadge && (
+            {topLeftBadge && product.quantity !== 0 && (
                 <div className="absolute top-1 md:top-2 left-1 md:left-2 z-10">
                     {topLeftBadge}
                 </div>
             )}
 
-            {/* Top Right Badge Slot */}
-            {topRightBadge && (
+            {topRightBadge && product.quantity !== 0 && (
                 <div className="absolute top-1 md:top-2 right-1 md:right-2 z-10">
                     {topRightBadge}
                 </div>
             )}
 
-            {/* Product Image Container */}
-            <div className="relative px-2 md:px-3 pt-3 md:pt-4 pb-3 md:pb-4">
-                <div className="w-full aspect-square flex items-center justify-center bg-white">
+            <div className={`relative px-2 md:px-3 pt-3 md:pt-4 pb-3 md:pb-4 ${product.quantity === 0 ? 'opacity-60' : ''}`}>
+                <div className="w-full aspect-square flex items-center justify-center bg-white relative">
+                    {product.quantity === 0 && <OutOfStockBadge />}
                     {imageError ? (
                         <div className="text-gray-400 text-xs md:text-sm">Image not available</div>
                     ) : (
                         <img
                             src={product.image}
                             alt={product.name}
-                            className="w-full h-full object-cover transition-transform duration-300"
-                            style={{ transform: isHovered ? 'scale(1.05)' : 'scale(1)' }}
+                            className={`w-full h-full object-cover transition-all duration-300 ${product.quantity === 0 ? 'grayscale' : ''}`}
+                            style={{ transform: isHovered && product.quantity !== 0 ? 'scale(1.05)' : 'scale(1)' }}
                             onError={() => setImageError(true)}
                         />
                     )}
@@ -80,22 +92,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView, onClick
                 <div className="border-b border-gray-200"></div>
             </div>
 
-            {/* Product Info */}
             <div className="px-2 md:px-3 pb-2 md:pb-3 text-center">
-                {/* Rating */}
                 <RatingStars
                     rating={product.rating}
                     reviewCount={product.reviewCount}
+                    showReviewLabel={true}
                     starSize="lg"
                     className="justify-center mb-1"
                 />
 
-                {/* Product Name */}
                 <h3 className="text-gray-900 font-semibold text-xs md:text-sm lg:text-base mb-1.5 md:mb-2 line-clamp-1">
                     {product.name}
                 </h3>
 
-                {/* Price */}
                 <PriceDisplay
                     originalPrice={product.originalPrice}
                     salePrice={product.salePrice}
@@ -104,18 +113,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView, onClick
                     className="justify-center mb-2 md:mb-3 flex-wrap"
                 />
 
-                {/* Action Buttons */}
+
+
                 <div className="flex gap-1.5 md:gap-2 mb-0">
                     <Button
-                        variant={isHovered ? 'primary' : 'secondary'}
-                        className={`flex-1 rounded-[4px] gap-1 md:gap-1.5 text-[10px] md:text-xs h-10 lg:h-10 ${!isHovered ? 'bg-gray-200 hover:bg-gray-300 text-gray-700' : 'bg-emerald-600 hover:bg-emerald-700'}`}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                        }}
+                        variant={isHovered && product.quantity !== 0 ? 'primary' : 'secondary'}
+                        disabled={product.quantity === 0}
+                        className={`flex-1 rounded-[4px] gap-1 md:gap-1.5 text-[10px] md:text-xs h-10 lg:h-10 transition-all ${product.quantity === 0
+                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200'
+                            : !isHovered
+                                ? 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                                : 'bg-emerald-600 hover:bg-emerald-700'
+                            }`}
+                        onClick={handleAddToCart}
                     >
-                        <ShoppingCart size={14} className="md:w-4 md:h-4" />
-                        <span>Add</span>
+                        {addToCartIcon || <ShoppingCart size={14} className="md:w-4 md:h-4" />}
+                        <span>{product.quantity === 0 ? 'Out of Stock' : addToCartLabel}</span>
                     </Button>
                     <Button
                         variant={isHovered ? 'primary' : 'secondary'}

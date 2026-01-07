@@ -2,9 +2,8 @@
 
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { Swiper, SwiperSlide, useSwiper, Autoplay, Navigation } from '@/core/utils/swiper';
-import ProductCard from '@/core/components/shared/ProductCard';
-import { ProductBadge } from '@/core/components/shared/ProductBadge';
-import { useIsMobile } from '@/core/hooks/use-mobile';
+import SmartProductCard from '@/modules/products/components/SmartProductCard';
+import { Product } from '@/modules/home/types';
 import { SAMPLE_PRODUCTS } from '@/core/constants/index';
 
 export interface CollectedNewItemsHandle {
@@ -12,9 +11,14 @@ export interface CollectedNewItemsHandle {
     slideNext: () => void;
 }
 
-const CollectedNewItems = forwardRef<CollectedNewItemsHandle>((_, ref) => {
+interface CollectedNewItemsProps {
+    onProductClick?: (product: Product) => void;
+    onQuickView?: (product: Product) => void;
+    products?: Product[];
+}
+
+const CollectedNewItems = forwardRef<CollectedNewItemsHandle, CollectedNewItemsProps>(({ onProductClick, onQuickView, products }, ref) => {
     const { swiperRef, slidePrev, slideNext, stopAutoplay, startAutoplay } = useSwiper();
-    const isMobile = useIsMobile();
 
     // Expose slide methods to parent
     useImperativeHandle(ref, () => ({
@@ -22,8 +26,10 @@ const CollectedNewItems = forwardRef<CollectedNewItemsHandle>((_, ref) => {
         slideNext,
     }));
 
-    // Filter products that are new
-    const newProducts = SAMPLE_PRODUCTS.filter(product => product.isNew);
+    // Use passed products or empty array
+    const newProducts = products || [];
+
+
 
     return (
         <section className="w-full">
@@ -38,7 +44,7 @@ const CollectedNewItems = forwardRef<CollectedNewItemsHandle>((_, ref) => {
                         <Swiper
                             modules={[Autoplay, Navigation]}
                             onSwiper={(swiper) => { swiperRef.current = swiper; }}
-                            slidesPerView={isMobile ? 1.8 : 2}
+                            slidesPerView={1.8}
                             spaceBetween={16}
                             loop={true}
                             centeredSlides={false}
@@ -71,9 +77,11 @@ const CollectedNewItems = forwardRef<CollectedNewItemsHandle>((_, ref) => {
                         >
                             {newProducts.map((product) => (
                                 <SwiperSlide key={product.id}>
-                                    <ProductCard
-                                        product={product}
-                                        topLeftBadge={<ProductBadge isNew={true} />}
+                                    <SmartProductCard
+                                        product={product as any}
+                                        onQuickView={onQuickView as any}
+                                        onClick={onProductClick as any}
+                                        showNewOnly={true}
                                     />
                                 </SwiperSlide>
                             ))}

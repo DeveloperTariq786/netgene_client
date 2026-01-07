@@ -47,53 +47,68 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
                     onSwiper={(swiper) => { swiperRef.current = swiper; }}
                     slidesPerView={isMobile ? mobileSlidesPerView : slidesPerView.sm}
                     spaceBetween={16}
-                    loop={true}
+                    loop={items.length > 5}
+                    centeredSlides={false}
+                    grabCursor={true}
                     autoplay={{
                         delay: 5000,
                         disableOnInteraction: false,
+                        pauseOnMouseEnter: true
                     }}
                     breakpoints={{
                         640: {
-                            slidesPerView: slidesPerView.sm,
+                            slidesPerView: 3,
                             spaceBetween: 20,
                         },
                         768: {
-                            slidesPerView: slidesPerView.md,
+                            slidesPerView: 4,
                             spaceBetween: 24,
                         },
                         1024: {
-                            slidesPerView: slidesPerView.lg,
-                            spaceBetween: 24,
+                            slidesPerView: slidesPerView.lg || 5,
+                            spaceBetween: 30,
                         },
+                        1440: {
+                            slidesPerView: 6,
+                            spaceBetween: 30,
+                        }
                     }}
+                    className="category-swiper !py-4"
                 >
                     {items.map((item, index) => (
                         <SwiperSlide key={`${item.id}-${index}`}>
-                            <Link href="/products">
+                            <Link href={`/products?category=${item.id}`} className="block group/item">
                                 <div
-                                    className="relative w-full aspect-[2/1] rounded-[10px] overflow-hidden cursor-pointer transform transition-transform duration-300 hover:scale-[1.02]"
+                                    className="relative w-full aspect-[2/1.1] rounded-xl overflow-hidden cursor-pointer shadow-sm border border-white/10"
                                 >
-                                    {/* Background Image */}
-                                    <img
-                                        src={item.image}
-                                        alt={item.title}
-                                        className="w-full h-full object-cover"
-                                        loading="lazy"
-                                    />
+                                    {/* Background Image with Zoom on Hover */}
+                                    <div className="absolute inset-0 transition-transform duration-700 group-hover/item:scale-110">
+                                        <img
+                                            src={item.image}
+                                            alt={item.title}
+                                            className="w-full h-full object-cover"
+                                            loading="lazy"
+                                        />
+                                    </div>
 
-
-                                    <div
-                                        className={`absolute inset-0 opacity-20 bg-gray-500 transition-opacity hover:opacity-30`}
-                                    ></div>
+                                    {/* Gradient Overlay */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-80 group-hover/item:opacity-90 transition-opacity"></div>
 
                                     {/* Text Content */}
-                                    <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10">
-                                        <h3 className="text-lg font-bold tracking-wide mb-1 drop-shadow-md text-center px-2">
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 p-2">
+                                        <h3 className="text-sm md:text-base lg:text-lg font-bold tracking-wide mb-0.5 drop-shadow-lg text-center leading-tight">
                                             {item.title}
                                         </h3>
-                                        <p className="text-xs font-medium opacity-90">
-                                            {item.count}
-                                        </p>
+                                        <div className="bg-white/20 backdrop-blur-md px-2 py-0.5 rounded-full">
+                                            <p className="text-[10px] md:text-xs font-semibold">
+                                                {item.count}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Shine Effect */}
+                                    <div className="absolute inset-0 opacity-0 group-hover/item:opacity-100 transition-opacity pointer-events-none">
+                                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg] animate-shine"></div>
                                     </div>
                                 </div>
                             </Link>
@@ -103,16 +118,22 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
             </div>
 
             {/* Navigation Arrows */}
-            <CarouselArrow
-                direction="left"
-                onClick={slidePrev}
-                className="!left-2 md:!left-4"
-            />
-            <CarouselArrow
-                direction="right"
-                onClick={slideNext}
-                className="!right-2 md:!right-4"
-            />
+            <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 pointer-events-none z-30 px-2 md:px-6">
+                <div className="flex justify-between w-full max-w-[1500px] mx-auto overflow-visible pointer-events-none">
+                    <CarouselArrow
+                        direction="left"
+                        onClick={slidePrev}
+                        className="pointer-events-auto relative !static translate-y-0"
+                    />
+                    <CarouselArrow
+                        direction="right"
+                        onClick={slideNext}
+                        className="pointer-events-auto relative !static translate-y-0"
+                    />
+
+                </div>
+            </div>
+
         </div>
     );
 };

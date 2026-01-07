@@ -3,29 +3,65 @@
 import React from 'react';
 import { Swiper, SwiperSlide, useSwiper, Autoplay, Pagination, EffectFade, Navigation } from '@/core/utils/swiper';
 import { ShoppingBag, Tag, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
-import { HERO_SLIDES } from '../../../core/constants';
+import { useRouter } from 'next/navigation';
+import { useCarousel } from '../hooks/useCarousel';
+import { Skeleton } from '@/core/components/ui/skeleton';
 import { Button } from '@/core/components/ui';
 
+const HeroCarouselSkeleton = () => (
+    <div className="w-full h-[400px] md:h-[440px] lg:h-[550px] bg-hero-organic animate-pulse flex items-center">
+        <div className="container mx-auto px-4 lg:px-24 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div className="space-y-6">
+                <Skeleton className="h-4 w-32 bg-emerald-100" />
+                <Skeleton className="h-16 w-full lg:w-3/4 bg-emerald-100" />
+                <Skeleton className="h-24 w-full lg:w-1/2 bg-emerald-100" />
+                <div className="flex gap-4">
+                    <Skeleton className="h-12 w-32 rounded-md bg-emerald-100" />
+                    <Skeleton className="h-12 w-32 rounded-md bg-emerald-100" />
+                </div>
+            </div>
+            <div className="hidden lg:flex justify-center">
+                <Skeleton className="h-[400px] w-[400px] rounded-full bg-emerald-100" />
+            </div>
+        </div>
+    </div>
+);
+
 const HeroCarousel: React.FC = () => {
+    const router = useRouter();
     const { swiperRef, slidePrev, slideNext } = useSwiper();
-    const slidesToRender = [...HERO_SLIDES, ...HERO_SLIDES];
+    const { data: carousels, isLoading, error } = useCarousel();
+
+    if (isLoading) {
+        return <HeroCarouselSkeleton />;
+    }
+
+    const slidesToRender = carousels && carousels.length > 0 ? carousels : [];
+
+    if (slidesToRender.length === 0) {
+        return null;
+    }
 
     return (
         <div className="relative w-full h-auto bg-hero-organic overflow-hidden group">
-            <button
-                onClick={slidePrev}
-                className="swiper-button-prev-custom absolute left-4 lg:left-6 top-1/2 z-30 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg hidden lg:flex items-center justify-center hover:bg-emerald-50 hover:scale-110 transition-all duration-300 text-emerald-600"
-                aria-label="Previous slide"
-            >
-                <ChevronLeft size={28} strokeWidth={2.5} />
-            </button>
-            <button
-                onClick={slideNext}
-                className="swiper-button-next-custom absolute right-4 lg:right-6 top-1/2 z-30 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg hidden lg:flex items-center justify-center hover:bg-emerald-50 hover:scale-110 transition-all duration-300 text-emerald-600"
-                aria-label="Next slide"
-            >
-                <ChevronRight size={28} strokeWidth={2.5} />
-            </button>
+            {slidesToRender.length > 1 && (
+                <>
+                    <button
+                        onClick={slidePrev}
+                        className="swiper-button-prev-custom absolute left-4 lg:left-6 top-1/2 z-30 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg hidden lg:flex items-center justify-center hover:bg-emerald-50 hover:scale-110 transition-all duration-300 text-emerald-600"
+                        aria-label="Previous slide"
+                    >
+                        <ChevronLeft size={28} strokeWidth={2.5} />
+                    </button>
+                    <button
+                        onClick={slideNext}
+                        className="swiper-button-next-custom absolute right-4 lg:right-6 top-1/2 z-30 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg hidden lg:flex items-center justify-center hover:bg-emerald-50 hover:scale-110 transition-all duration-300 text-emerald-600"
+                        aria-label="Next slide"
+                    >
+                        <ChevronRight size={28} strokeWidth={2.5} />
+                    </button>
+                </>
+            )}
 
             <Swiper
                 modules={[Autoplay, Pagination, EffectFade, Navigation]}
@@ -34,9 +70,9 @@ const HeroCarousel: React.FC = () => {
                 slidesPerView={1}
                 effect="fade"
                 fadeEffect={{ crossFade: true }}
-                loop={true}
+                loop={slidesToRender.length > 1}
                 autoplay={{
-                    delay: 2000,
+                    delay: 4000,
                     disableOnInteraction: false,
                     pauseOnMouseEnter: true,
                 }}
@@ -81,18 +117,27 @@ const HeroCarousel: React.FC = () => {
                                                 variant="primary"
                                                 size="lg"
                                                 className="group shadow-lg hover:-translate-y-1 w-full sm:w-auto"
+                                                onClick={() => {
+                                                    if (slide.brandId) {
+                                                        const paramName = slide.association === 'brand' ? 'brand' : 'category';
+                                                        router.push(`/products?${paramName}=${slide.brandId}`);
+                                                    } else {
+                                                        router.push('/products');
+                                                    }
+                                                }}
                                             >
                                                 <ShoppingBag size={20} />
-                                                {slide.ctaPrimary}
+                                                Shop Now
                                             </Button>
 
                                             <Button
                                                 variant="outline"
                                                 size="lg"
                                                 className="group w-full sm:w-auto"
+                                                onClick={() => router.push('/offers')}
                                             >
                                                 {isEven ? <Tag size={20} /> : <ArrowRight size={20} />}
-                                                {slide.ctaSecondary}
+                                                View Offers
                                             </Button>
                                         </div>
                                     </div>

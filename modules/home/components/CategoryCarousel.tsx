@@ -15,6 +15,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ items }) => {
 
     return (
         <div
+            id="categories"
             className="relative w-full group py-8"
             onMouseEnter={() => {
                 setIsHovered(true);

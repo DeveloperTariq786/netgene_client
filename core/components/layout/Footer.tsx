@@ -41,19 +41,13 @@ const FEATURES = [
 
 // Quick Links
 const QUICK_LINKS = [
+    { label: "Home", href: "/" },
     { label: "About Us", href: "/about" },
-    { label: "Shop", href: "/shop" },
-    { label: "Categories", href: "/categories" },
-    { label: "My Account", href: "/account" },
-    { label: "FAQs", href: "/faqs" },
-];
-
-// Customer Service Links
-const CUSTOMER_SERVICE = [
-    { label: "Track Order", href: "/track" },
-    { label: "Return Policy", href: "/returns" },
-    { label: "Shipping Info", href: "/shipping" },
-    { label: "Help Center", href: "/help" },
+    { label: "Brands", href: "/brands" },
+    { label: "Categories", href: "/#categories" },
+    { label: "My Account", href: "/profile" },
+    { label: "Track Orders", href: "/orders" },
+    { label: "Offers", href: "/offers" },
     { label: "Contact Us", href: "/contact" },
 ];
 
@@ -131,7 +125,7 @@ const Footer = () => {
             {/* Main Footer */}
             <div className="w-full bg-gradient-to-b from-gray-50 to-emerald-50/30">
                 <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-14 py-10 md:py-12 lg:py-16">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 xl:gap-12">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-10 xl:gap-12">
                         {/* Brand Section */}
                         <div className="lg:col-span-1">
                             {/* Logo */}
@@ -162,46 +156,53 @@ const Footer = () => {
                             />
                         </div>
 
-                        {/* Quick Links */}
-                        <div>
-                            <h3 className="text-base md:text-lg font-bold text-gray-900 mb-4 md:mb-6 relative inline-block">
-                                Quick Links
-                                <span className="absolute -bottom-2 left-0 w-8 md:w-10 h-0.5 bg-emerald-600 rounded-full" />
-                            </h3>
-                            <ul className="space-y-2 md:space-y-3">
-                                {QUICK_LINKS.map((link, index) => (
-                                    <li key={index}>
-                                        <Link
-                                            href={link.href}
-                                            className="text-gray-600 text-xs md:text-sm hover:text-emerald-600 hover:pl-2 transition-all duration-300 inline-flex items-center gap-1 group"
-                                        >
-                                            <ChevronRight className="w-3 h-3 md:w-4 md:h-4 opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 text-emerald-600" />
-                                            {link.label}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                        {/* Quick Links Section */}
+                        <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-y-0 md:gap-x-8">
+                            {/* Quick Links Column 1 */}
+                            <div>
+                                <h3 className="text-base md:text-lg font-bold text-gray-900 mb-4 md:mb-6 relative inline-block">
+                                    Quick Links
+                                    <span className="absolute -bottom-2 left-0 w-12 md:w-16 h-0.5 bg-emerald-600 rounded-full" />
+                                </h3>
+                                <ul className="space-y-2 md:space-y-3">
+                                    {[QUICK_LINKS[0], QUICK_LINKS[2], QUICK_LINKS[4], QUICK_LINKS[6]].map((link, index) => (
+                                        link && (
+                                            <li key={index}>
+                                                <Link
+                                                    href={link.href}
+                                                    className="text-gray-600 text-xs md:text-sm hover:text-emerald-600 hover:pl-2 transition-all duration-300 inline-flex items-center gap-1 group"
+                                                >
+                                                    <ChevronRight className="w-3 h-3 md:w-4 md:h-4 opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 text-emerald-600" />
+                                                    {link.label}
+                                                </Link>
+                                            </li>
+                                        )
+                                    ))}
+                                </ul>
+                            </div>
 
-                        {/* Customer Service */}
-                        <div>
-                            <h3 className="text-base md:text-lg font-bold text-gray-900 mb-4 md:mb-6 relative inline-block">
-                                Customer Service
-                                <span className="absolute -bottom-2 left-0 w-8 md:w-10 h-0.5 bg-emerald-600 rounded-full" />
-                            </h3>
-                            <ul className="space-y-2 md:space-y-3">
-                                {CUSTOMER_SERVICE.map((link, index) => (
-                                    <li key={index}>
-                                        <Link
-                                            href={link.href}
-                                            className="text-gray-600 text-xs md:text-sm hover:text-emerald-600 hover:pl-2 transition-all duration-300 inline-flex items-center gap-1 group"
-                                        >
-                                            <ChevronRight className="w-3 h-3 md:w-4 md:h-4 opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 text-emerald-600" />
-                                            {link.label}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
+                            {/* Quick Links Column 2 */}
+                            <div>
+                                <h3 className="hidden md:inline-block text-base md:text-lg font-bold text-gray-900 mb-4 md:mb-6 relative">
+                                    Quick Links
+                                    <span className="absolute -bottom-2 left-0 w-12 md:w-16 h-0.5 bg-emerald-600 rounded-full" />
+                                </h3>
+                                <ul className="space-y-2 md:space-y-3">
+                                    {[QUICK_LINKS[1], QUICK_LINKS[3], QUICK_LINKS[5], QUICK_LINKS[7]].map((link, index) => (
+                                        link && (
+                                            <li key={index}>
+                                                <Link
+                                                    href={link.href}
+                                                    className="text-gray-600 text-xs md:text-sm hover:text-emerald-600 hover:pl-2 transition-all duration-300 inline-flex items-center gap-1 group"
+                                                >
+                                                    <ChevronRight className="w-3 h-3 md:w-4 md:h-4 opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 text-emerald-600" />
+                                                    {link.label}
+                                                </Link>
+                                            </li>
+                                        )
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
 
                         {/* Contact Us Section */}
@@ -273,51 +274,18 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* Developer Credit Section */}
-                <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-14 pb-8 md:pb-10">
-                    <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 flex items-center justify-center shadow-lg">
-                        <div className="text-center">
-                            <p className="text-white/80 text-xs md:text-sm mb-1">
-                                Designed & Developed by
-                            </p>
-                            <h4 className="text-white text-lg md:text-xl lg:text-2xl font-bold tracking-wide">
-                                ✨ Shahheen Developers ✨
-                            </h4>
-                        </div>
-                    </div>
-                </div>
+
 
                 {/* Copyright Bar */}
                 <div className="w-full border-t border-gray-200 bg-white/50">
                     <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-14 py-4 md:py-5">
-                        <div className="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-3">
+                        <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-3">
                             <p className="text-gray-500 text-xs md:text-sm text-center md:text-left">
                                 © {new Date().getFullYear()}{" "}
                                 <span className="font-semibold text-emerald-600">Greeny</span>.
                                 All rights reserved.
                             </p>
-                            <div className="flex items-center gap-4 md:gap-6 text-xs md:text-sm">
-                                <Link
-                                    href="#"
-                                    className="text-gray-500 hover:text-emerald-600 transition-colors duration-300"
-                                >
-                                    Privacy Policy
-                                </Link>
-                                <span className="text-gray-300">|</span>
-                                <Link
-                                    href="#"
-                                    className="text-gray-500 hover:text-emerald-600 transition-colors duration-300"
-                                >
-                                    Terms of Service
-                                </Link>
-                                <span className="text-gray-300">|</span>
-                                <Link
-                                    href="#"
-                                    className="text-gray-500 hover:text-emerald-600 transition-colors duration-300"
-                                >
-                                    Cookie Policy
-                                </Link>
-                            </div>
+
                         </div>
                     </div>
                 </div>

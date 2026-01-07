@@ -658,7 +658,7 @@ export const SAMPLE_CART_ITEMS: CartItem[] = [
     },
 ];
 
-export const SAMPLE_ADDRESSES: import('../../modules/home/types').Address[] = [
+export const SHIPPING_ADDRESSES: import('../../modules/home/types').Address[] = [
     {
         id: 1,
         type: 'Home',
@@ -730,4 +730,25 @@ export const SAMPLE_ORDERS: Order[] = [
             }
         ]
     }
+];
+
+
+// Product Filter Constants
+export const PRICE_RANGE_LIMITS = {
+    MIN: 0,
+    MAX: 5000,
+    STEP: 50
+};
+
+export const INITIAL_PRICE_RANGE = {
+    min: PRICE_RANGE_LIMITS.MIN,
+    max: PRICE_RANGE_LIMITS.MAX
+};
+
+export const INITIAL_RATINGS = [
+    { rating: 5, count: 5, checked: false },
+    { rating: 4, count: 4, checked: false },
+    { rating: 3, count: 3, checked: false },
+    { rating: 2, count: 2, checked: false },
+    { rating: 1, count: 1, checked: false },
 ];

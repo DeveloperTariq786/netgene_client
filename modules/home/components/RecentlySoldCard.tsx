@@ -1,8 +1,7 @@
 "use client";
 
 import React from 'react';
-import ProductCard from '@/core/components/shared/ProductCard';
-import { ProductBadge } from '@/core/components/shared/ProductBadge';
+import SmartProductCard from '@/modules/products/components/SmartProductCard';
 import { Product } from '@/modules/home/types';
 
 interface RecentlySoldCardProps {
@@ -13,12 +12,11 @@ interface RecentlySoldCardProps {
 
 const RecentlySoldCard: React.FC<RecentlySoldCardProps> = ({ product, onQuickView, onClick }) => {
     return (
-        <ProductCard
-            product={product}
-            onQuickView={onQuickView}
-            onClick={onClick}
-            topLeftBadge={product.isNew ? <ProductBadge isNew={true} /> : undefined}
-            topRightBadge={product.onSale ? <ProductBadge onSale={true} /> : undefined}
+        <SmartProductCard
+            product={product as any}
+            onQuickView={onQuickView as any}
+            onClick={onClick as any}
+            showNewAndSaleOnly={true}
         />
     );
 };

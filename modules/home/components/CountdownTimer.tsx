@@ -9,47 +9,47 @@ interface TimeLeft {
     seconds: number;
 }
 
-export const CountdownTimer: React.FC = () => {
-    const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-        days: 12,
-        hours: 5,
-        minutes: 45,
-        seconds: 30
-    });
+interface CountdownTimerProps {
+    targetDate?: string;
+    onExpire?: () => void;
+}
+
+export const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate, onExpire }) => {
+    const calculateTimeLeft = React.useCallback(() => {
+        if (!targetDate) {
+            return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+        }
+
+        const difference = +new Date(targetDate) - +new Date();
+        if (difference <= 0) {
+            return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+        }
+
+        return {
+            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+            minutes: Math.floor((difference / 1000 / 60) % 60),
+            seconds: Math.floor((difference / 1000) % 60)
+        };
+    }, [targetDate]);
+
+    const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft((prev) => {
-                let { days, hours, minutes, seconds } = prev;
+        setTimeLeft(calculateTimeLeft()); // Reset when targetDate changes
 
-                if (seconds > 0) {
-                    seconds--;
-                } else {
-                    seconds = 59;
-                    if (minutes > 0) {
-                        minutes--;
-                    } else {
-                        minutes = 59;
-                        if (hours > 0) {
-                            hours--;
-                        } else {
-                            hours = 23;
-                            if (days > 0) {
-                                days--;
-                            } else {
-                                // Timer finished, just reset or stop
-                                clearInterval(timer);
-                                return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-                            }
-                        }
-                    }
-                }
-                return { days, hours, minutes, seconds };
-            });
+        const timer = setInterval(() => {
+            const nextTime = calculateTimeLeft();
+            setTimeLeft(nextTime);
+
+            if (nextTime.days === 0 && nextTime.hours === 0 && nextTime.minutes === 0 && nextTime.seconds === 0) {
+                onExpire?.();
+                clearInterval(timer);
+            }
         }, 1000);
 
         return () => clearInterval(timer);
-    }, []);
+    }, [calculateTimeLeft, onExpire]);
 
     const formatNumber = (num: number) => num.toString().padStart(2, '0');
 

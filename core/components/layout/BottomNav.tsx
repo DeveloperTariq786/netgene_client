@@ -3,12 +3,14 @@
 import React, { useState } from 'react';
 import { Home, Store, Grid, User } from 'lucide-react';
 import { Button } from '@/core/components/ui';
-import Drawer from './CategoryDrawer';
-import BrandsDrawer from './BrandsDrawer';
+import Drawer from '../../../modules/category/components/CategoryDrawer';
+import BrandsDrawer from '../../../modules/brands/components/BrandsDrawer';
+import { usePrefetchBrands } from '@/modules/brands/hooks/useBrands';
 
 export const BottomNav: React.FC = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isBrandsDrawerOpen, setIsBrandsDrawerOpen] = useState(false);
+    const prefetchBrands = usePrefetchBrands();
 
     return (
         <>
@@ -27,6 +29,8 @@ export const BottomNav: React.FC = () => {
                     variant="ghost"
                     className="flex flex-col items-center gap-1 text-gray-500 hover:text-emerald-600 h-auto py-1"
                     onClick={() => setIsBrandsDrawerOpen(true)}
+                    onMouseEnter={prefetchBrands}
+                    onTouchStart={prefetchBrands}
                 >
                     <Store className="w-6 h-6" />
                     <span className="text-[10px] font-medium">Brand</span>
@@ -44,7 +48,7 @@ export const BottomNav: React.FC = () => {
                     asChild
                     className="flex flex-col items-center gap-1 text-gray-500 hover:text-emerald-600 h-auto py-1"
                 >
-                    <a href="#">
+                    <a href="/profile">
                         <User className="w-6 h-6" />
                         <span className="text-[10px] font-medium">Profile</span>
                     </a>

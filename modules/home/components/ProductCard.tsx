@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { ShoppingCart, Heart, Shuffle, Play, Eye } from 'lucide-react';
+import OutOfStockBadge from '@/core/components/shared/OutOfStockBadge';
 
 interface Product {
     id: number;
@@ -13,6 +14,7 @@ interface Product {
     rating: number;
     reviewCount: number;
     onSale?: boolean;
+    quantity?: number;
 }
 
 interface ProductCardProps {
@@ -43,6 +45,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {product.onSale && (
                 <div className="absolute top-2 left-2 bg-secondary text-secondary-foreground px-2 py-0.5 rounded text-xs font-semibold z-10">
                     Sale
+                </div>
+            )}
+
+            {/* Out of Stock Badge */}
+            {product.quantity === 0 && (
+                <div className="absolute top-2 left-2 z-10">
+                    <OutOfStockBadge />
                 </div>
             )}
 
@@ -110,13 +119,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
                 {/* Add Button */}
                 <button
-                    className={`w-full py-2 rounded-lg font-medium text-sm transition-all duration-300 flex items-center justify-center gap-1.5 ${isHovered
-                        ? 'bg-primary hover:bg-primary-hover text-primary-foreground'
-                        : 'bg-muted hover:bg-muted/80 text-foreground'
+                    disabled={product.quantity === 0}
+                    className={`w-full py-2 rounded-lg font-medium text-sm transition-all duration-300 flex items-center justify-center gap-1.5 ${product.quantity === 0
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : isHovered
+                            ? 'bg-primary hover:bg-primary-hover text-primary-foreground'
+                            : 'bg-muted hover:bg-muted/80 text-foreground'
                         }`}
                 >
                     <ShoppingCart size={16} />
-                    Add
+                    {product.quantity === 0 ? 'Out of Stock' : 'Add'}
                 </button>
             </div>
         </div>

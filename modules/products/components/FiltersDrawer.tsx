@@ -6,7 +6,6 @@ import ProductFilters from './ProductFilters';
 
 interface AppliedFilters {
     priceRange: { min: number; max: number };
-    ratings: number[];
     brands: string[];
     categories: string[];
 }
